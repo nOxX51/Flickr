@@ -15,15 +15,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.http.Query;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
 
         private FlickrService flickrService;
         boolean bound=false;
+        private AdapterList adapterList;
 
 
     @Override
@@ -47,21 +49,16 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_list);
 
-
             ListView listView = (ListView) findViewById(R.id.list);
-
-
-            final AdapterList adapterList = new AdapterList(this);
+            adapterList = new AdapterList(this);
             listView.setAdapter(adapterList);
 
-
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView,
                                         View view, int position, long id) {
                     Intent intent = new Intent(MainActivity.this,ShowBigCellActivity.class);
+                    intent.putExtra("picture",adapterList.getItem(position));
                     startActivity(intent);
                 }
             });
@@ -69,15 +66,12 @@ public class MainActivity extends AppCompatActivity {
             FloatingActionButton searchButton = (FloatingActionButton) findViewById(R.id.fab2);
             final EditText textField = (EditText) findViewById(R.id.text_field);
 
-
-
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this,textField.getText().toString(),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(MainActivity.this,textField.getText().toString(),Toast.LENGTH_LONG).show();
                     String myQuery = textField.getText().toString();
                     flickrService.getPhotos(myQuery);
-
                 }
             });
 
@@ -89,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             FlickrService.ServiceBinder binder = (FlickrService.ServiceBinder) service;
             flickrService=binder.getService();
+            flickrService.setFlickrResponseListner(MainActivity.this);
             bound=true;
         }
 
@@ -98,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onPhotosReceived(List<Picture> pictureList) {
+        adapterList.setMyList(pictureList);
+    }
 }
 
 

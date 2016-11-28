@@ -25,6 +25,14 @@ public class FlickrService extends Service {
 
     private RetrofitService service;
     private final IBinder flickr = new ServiceBinder();
+    private FlickrResponseListner flickrResponseListner;
+
+
+    public void setFlickrResponseListner(FlickrResponseListner flickrResponseListner) {
+        this.flickrResponseListner = flickrResponseListner;
+    }
+
+
 
     @Nullable
     @Override
@@ -47,7 +55,7 @@ public class FlickrService extends Service {
 
     public void getPhotos(String query){
 
-        Call<FlickrResponseDto> flickrPhotosResponseCall = service.getPhotos(query, getResources().getString(R.string.api_flicker_key));
+        final Call<FlickrResponseDto> flickrPhotosResponseCall = service.getPhotos(query, getResources().getString(R.string.api_flicker_key));
         flickrPhotosResponseCall.enqueue(new Callback<FlickrResponseDto>(){
 
             @Override
@@ -56,6 +64,7 @@ public class FlickrService extends Service {
                 if (response.isSuccessful()) {
 
                     List<Picture> myList = Converter.convert(response.body());
+                    flickrResponseListner.onPhotosReceived(myList);
                     Log.e("URL", myList.toString());
 
                 } else {

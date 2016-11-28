@@ -9,37 +9,31 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.noxx.flicker.R.id.picture;
+
 public class AdapterList extends BaseAdapter {
-
-
-
     private Context context;
     private List<Picture> myList = new ArrayList<>();
-
-
 
     public void setMyList(List<Picture> myList) {
         this.myList = myList;
         notifyDataSetChanged();
     }
 
-
     public AdapterList(Context context, List myList){
         this.context = context;
         this.myList = myList;
-
     }
 
     public AdapterList(Context context){
         this.context = context;
     }
-
-
-
-
 
     @Override
     public int getCount() {
@@ -61,16 +55,17 @@ public class AdapterList extends BaseAdapter {
         if(convertView==null){
             convertView = LayoutInflater.from(context).inflate(R.layout.cell_layout, parent,false);
         }
+
         TextView textView = (TextView) convertView.findViewById(R.id.textUpgrade);
         textView.setText(myList.get(position).getTitle());
-        textView.setTextColor(myList.get(position).getColor());
+        //textView.setTextColor(myList.get(position).getColor());
 
         TextView urlView = (TextView) convertView.findViewById(R.id.showURL);
         urlView.setText(myList.get(position).getUrl());
-        urlView.setTextColor(myList.get(position).getColor());
+        //urlView.setTextColor(myList.get(position).getColor());
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.picture);
-        imageView.setImageResource(myList.get(position).getRessources());
+        ImageView imageView = (ImageView) convertView.findViewById(picture);
+        Picasso.with(context).load(myList.get(position).getUrl()).fit().centerInside().into(imageView);
 
         FloatingActionButton button = (FloatingActionButton) convertView.findViewById(R.id.fab);
         button.setFocusable(false);
@@ -83,7 +78,6 @@ public class AdapterList extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
-
 
         return convertView;
     }

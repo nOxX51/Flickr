@@ -1,10 +1,12 @@
 package com.noxx.flicker;
 
+import java.io.Serializable;
+
 /**
  * Created by HB on 25/11/2016.
  */
 
-public class Picture{
+public class Picture implements Serializable {
 
     private int color;
     private String title;
