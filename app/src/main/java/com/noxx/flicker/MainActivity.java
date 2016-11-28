@@ -18,10 +18,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.http.Query;
+
 public class MainActivity extends AppCompatActivity {
 
         private FlickrService flickrService;
         boolean bound=false;
+
 
     @Override
     protected void onStart() {
@@ -66,12 +69,14 @@ public class MainActivity extends AppCompatActivity {
             FloatingActionButton searchButton = (FloatingActionButton) findViewById(R.id.fab2);
             final EditText textField = (EditText) findViewById(R.id.text_field);
 
+
+
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(MainActivity.this,textField.getText().toString(),Toast.LENGTH_LONG).show();
-
-                    adapterList.setMyList(flickrService.getPhotos());
+                    String myQuery = textField.getText().toString();
+                    flickrService.getPhotos(myQuery);
 
                 }
             });

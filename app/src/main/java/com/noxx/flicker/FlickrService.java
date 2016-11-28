@@ -6,18 +6,36 @@ import android.graphics.Color;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.ListView;
+
+import com.noxx.flicker.dtopackage.FlickrResponseDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class FlickrService extends Service {
 
+
+    private RetrofitService service;
     private final IBinder flickr = new ServiceBinder();
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://www.flickr.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service = retrofit.create(RetrofitService.class);
+
         return flickr;
     }
 
@@ -27,17 +45,31 @@ public class FlickrService extends Service {
         }
     }
 
-    public List<Picture> getPhotos(){
+    public void getPhotos(String query){
 
-        List<Picture> pictureList = new ArrayList<>();
+        Call<FlickrResponseDto> flickrPhotosResponseCall = service.getPhotos(query, getResources().getString(R.string.api_flicker_key));
+        flickrPhotosResponseCall.enqueue(new Callback<FlickrResponseDto>(){
 
-        pictureList.add(new Picture(Color.MAGENTA,"Donatello", "http://donatello.pic.com", R.drawable.donatello_2));
-        pictureList.add(new Picture (Color.BLUE,"Leonardo", "http://leonardo.pic.com", R.drawable.leonardo_2));
-        pictureList.add(new Picture (Color.RED,"Raphael", "http://Raphael.pic.com", R.drawable.raphael_sc3a9rie_tv_2003_61));
-        pictureList.add(new Picture (Color.YELLOW,"Michelangelo", "http://Michelangelo.pic.com", R.drawable.mikey_5));
+            @Override
+            public void onResponse(Call<FlickrResponseDto> call,
+            Response<FlickrResponseDto> response) {
+                if (response.isSuccessful()) {
 
+                    List<Picture> myList = Converter.convert(response.body());
+                    Log.e("URL", myList.toString());
 
-        return pictureList;
+                } else {
+                    Log.e("ERROR", "OnResponse not successful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FlickrResponseDto> call,
+            Throwable t) {
+                Log.e("Fail","KabOOm !!");
+                }
+
+            });
 
     }
 }

@@ -15,7 +15,6 @@ public class Converter {
 
     public static List<Picture> convert(FlickrResponseDto flickrResponseDto) {
 
-
         List<Picture> pictureList = new ArrayList<>();
 
             for (int index = 0;index<flickrResponseDto.getPhotos().getPhoto().size();index ++) {
