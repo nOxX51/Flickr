@@ -5,19 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import android.widget.Spinner;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
 
@@ -53,28 +55,24 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
         setContentView(R.layout.activity_list);
 
         DrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        DrawerToggle = new ActionBarDrawerToggle(this, DrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+        DrawerToggle = new ActionBarDrawerToggle(this, DrawerLayout, R.string.drawer_open, R.string.drawer_close);
 
-
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mTitle);
-            }
-
-
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(mDrawerTitle);
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        DrawerLayout.setDrawerListener(DrawerToggle);
-
+        DrawerLayout.addDrawerListener(DrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //--------------3rd part integrated the spinner button------------------------
 
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+            // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.number_array, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        //--------------first part of flickr with the list and picasso---------------
         ListView listView = (ListView) findViewById(R.id.list);
         adapterList = new
 
@@ -104,11 +102,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
                  flickrService.getPhotos(myQuery);
                  }
               }
-
         );
-
-
-
     }
 
     @Override

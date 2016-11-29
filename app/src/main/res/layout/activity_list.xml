@@ -61,22 +61,44 @@
 
             <Button
                 android:id="@+id/b1"
+                android:layout_marginTop="5dp"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="search button" />
+                android:text="search"
+                android:backgroundTint="@android:color/darker_gray"/>
 
             <Button
                 android:id="@+id/b2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="historic search"/>
+                android:text="historic"
+                android:backgroundTint="@android:color/darker_gray"/>
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_light">
-            </Spinner>
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:text="Nombre de photos" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="30dp"
+                    android:text="Nb de photos"
+                    android:textAlignment="center">
+                </Spinner>
+
+            </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
