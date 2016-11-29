@@ -1,8 +1,8 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
-import com.noxx.flicker.dtopackage.FlickrPhotosDto;
-import com.noxx.flicker.dtopackage.FlickrResponseDto;
-import com.noxx.flicker.dtopackage.PhotoDto;
+import com.noxx.flickr.dtopackage.FlickrPhotosDto;
+import com.noxx.flickr.dtopackage.FlickrResponseDto;
+import com.noxx.flickr.dtopackage.PhotoDto;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;

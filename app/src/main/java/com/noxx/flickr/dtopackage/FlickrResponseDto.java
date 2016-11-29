@@ -1,6 +1,4 @@
-package com.noxx.flicker.dtopackage;
-
-import com.noxx.flicker.dtopackage.FlickrPhotosDto;
+package com.noxx.flickr.dtopackage;
 
 /**
  * Created by HB on 25/11/2016.

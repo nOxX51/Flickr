@@ -1,4 +1,4 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.noxx.flicker.R.id.picture;
+import static com.noxx.flickr.R.id.picture;
 
 public class AdapterList extends BaseAdapter {
     private Context context;

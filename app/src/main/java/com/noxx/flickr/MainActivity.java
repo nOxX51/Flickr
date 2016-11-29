@@ -1,10 +1,9 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.http.Query;
 
 public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
 

@@ -1,4 +1,4 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

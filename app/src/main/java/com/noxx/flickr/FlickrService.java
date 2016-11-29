@@ -1,17 +1,14 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.ListView;
 
-import com.noxx.flicker.dtopackage.FlickrResponseDto;
+import com.noxx.flickr.dtopackage.FlickrResponseDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

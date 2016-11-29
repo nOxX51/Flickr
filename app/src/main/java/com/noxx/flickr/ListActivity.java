@@ -1,4 +1,4 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import android.content.Intent;
 import android.graphics.Color;

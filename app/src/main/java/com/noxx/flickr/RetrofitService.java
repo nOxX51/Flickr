@@ -1,6 +1,6 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
-import com.noxx.flicker.dtopackage.FlickrResponseDto;
+import com.noxx.flickr.dtopackage.FlickrResponseDto;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

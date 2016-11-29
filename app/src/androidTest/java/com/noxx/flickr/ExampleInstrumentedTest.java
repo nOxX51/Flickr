@@ -1,4 +1,4 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

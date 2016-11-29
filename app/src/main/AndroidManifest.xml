@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.noxx.flicker">
+    package="com.noxx.flickr">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.noxx.flickr.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,11 +18,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ListActivity" />
-        <activity android:name=".ShowBigCellActivity" />
+        <activity android:name="com.noxx.flickr.ListActivity" />
+        <activity android:name="com.noxx.flickr.ShowBigCellActivity" />
 
         <service
-            android:name=".FlickrService"
+            android:name="com.noxx.flickr.FlickrService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

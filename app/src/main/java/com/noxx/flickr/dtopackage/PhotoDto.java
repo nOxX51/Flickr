@@ -1,4 +1,4 @@
-package com.noxx.flicker.dtopackage;
+package com.noxx.flickr.dtopackage;
 
 /**
  * Created by HB on 25/11/2016.

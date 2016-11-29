@@ -1,4 +1,4 @@
-package com.noxx.flicker;
+package com.noxx.flickr;
 
 import java.util.List;
 
