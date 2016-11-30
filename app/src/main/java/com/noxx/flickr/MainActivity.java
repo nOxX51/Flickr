@@ -16,10 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import java.util.List;
+
+import static com.noxx.flickr.R.id.b1;
+import static com.noxx.flickr.R.id.search_layout;
 
 
 public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
@@ -64,6 +69,26 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
         initSpinner();
         initListView();
         initSearch();
+        searchLayoutVisibility();
+    }
+
+    private void searchLayoutVisibility() {
+        final LinearLayout linearLayout = (LinearLayout) findViewById(search_layout);
+
+        final Button buttonSearch = (Button) findViewById(b1);
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearLayout.setVisibility(View.VISIBLE);
+            }
+        });
+        Button historicButton = (Button) findViewById(R.id.b2);
+        historicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void initDrawer() {
