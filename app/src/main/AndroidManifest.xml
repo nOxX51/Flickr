@@ -18,7 +18,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.noxx.flickr.ListActivity" />
         <activity android:name="com.noxx.flickr.ShowBigCellActivity" />
 
         <service

@@ -25,6 +25,7 @@ import java.util.List;
 
 import static com.noxx.flickr.R.id.b1;
 import static com.noxx.flickr.R.id.search_layout;
+import static com.noxx.flickr.R.id.url_list;
 
 
 public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
     private ActionBarDrawerToggle drawerToggle;
 
     private SharedPreferences settings;
-
+    PicturePersistenceManager savePicture = new PicturePersistenceManager(this);
 
     @Override
     protected void onStart() {
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
         // Restore preferences
         settings = getPreferences(MODE_PRIVATE);
 
+
         initDrawer();
         initSpinner();
         initListView();
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
 
     private void searchLayoutVisibility() {
         final LinearLayout linearLayout = (LinearLayout) findViewById(search_layout);
+        final PicturePersistenceManager picturePersistenceManager = new PicturePersistenceManager(this);
 
         final Button buttonSearch = (Button) findViewById(b1);
         buttonSearch.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
             @Override
             public void onClick(View v) {
                 linearLayout.setVisibility(View.GONE);
+                adapterList.setMyList(picturePersistenceManager.getAll());
             }
         });
     }
@@ -126,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
                 Intent intent = new Intent(MainActivity.this, ShowBigCellActivity.class);
                 intent.putExtra(PICTURE, adapterList.getItem(position));
                 startActivity(intent);
+                if(savePicture.getPictureByUrl(adapterList.getItem(position).getUrl()) != null) {
+                    savePicture.save(adapterList.getItem(position));
+                }
+
             }
         });
     }
