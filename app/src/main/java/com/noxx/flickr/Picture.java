@@ -1,17 +1,38 @@
 package com.noxx.flickr;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.io.Serializable;
 
 /**
  * Created by HB on 25/11/2016.
  */
 
-public class Picture implements Serializable {
+@Table(database = AppDataBase.class)
+public class Picture extends BaseModel implements Serializable {
 
+    @Column
+    @PrimaryKey(autoincrement = true)
+    private long id;
+    @Column
     private int color;
+    @Column
     private String title;
+    @Column
     private String url;
+    @Column
     private int ressources;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getColor() {
         return color;
@@ -55,6 +76,9 @@ public class Picture implements Serializable {
     public Picture(String title, String url) {
         this.title = title;
         this.url = url;
+    }
+
+    public Picture() {
     }
 
     @Override

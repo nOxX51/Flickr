@@ -30,7 +30,6 @@ public class FlickrService extends Service {
     }
 
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -50,14 +49,14 @@ public class FlickrService extends Service {
         }
     }
 
-    public void getPhotos(String query, String pages){
+    public void getPhotos(String query, String pages) {
 
         final Call<FlickrResponseDto> flickrPhotosResponseCall = service.getPhotos(query, getResources().getString(R.string.api_flicker_key), pages);
-        flickrPhotosResponseCall.enqueue(new Callback<FlickrResponseDto>(){
+        flickrPhotosResponseCall.enqueue(new Callback<FlickrResponseDto>() {
 
             @Override
             public void onResponse(Call<FlickrResponseDto> call,
-            Response<FlickrResponseDto> response) {
+                                   Response<FlickrResponseDto> response) {
                 if (response.isSuccessful()) {
 
                     List<Picture> myList = Converter.convert(response.body());
@@ -71,11 +70,11 @@ public class FlickrService extends Service {
 
             @Override
             public void onFailure(Call<FlickrResponseDto> call,
-            Throwable t) {
-                Log.e("Fail","KabOOm !!");
-                }
+                                  Throwable t) {
+                Log.e("Fail", "KabOOm !!");
+            }
 
-            });
+        });
 
     }
 }

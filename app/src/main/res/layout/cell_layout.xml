@@ -27,7 +27,6 @@
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="20sp" />
 
             <TextView
@@ -35,7 +34,6 @@
                 android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="20sp" />
 
             </LinearLayout>
@@ -47,6 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:src="@android:drawable/ic_delete"
+        android:backgroundTint="@android:color/background_light"
         app:fabSize="mini" />
 
 </LinearLayout>
