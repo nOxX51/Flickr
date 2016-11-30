@@ -56,11 +56,11 @@ public class AdapterList extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.cell_layout, parent,false);
         }
 
-        TextView textView = (TextView) convertView.findViewById(R.id.textUpgrade);
+        TextView textView = (TextView) convertView.findViewById(R.id.title_list);
         textView.setText(myList.get(position).getTitle());
         //textView.setTextColor(myList.get(position).getColor());
 
-        TextView urlView = (TextView) convertView.findViewById(R.id.showURL);
+        TextView urlView = (TextView) convertView.findViewById(R.id.url_list);
         urlView.setText(myList.get(position).getUrl());
         //urlView.setTextColor(myList.get(position).getColor());
 

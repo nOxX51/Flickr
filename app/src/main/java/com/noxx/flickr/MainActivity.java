@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -23,14 +24,16 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
 
+    public static final String NUMBER_OF_PHOTOS_WANTED = "number of photos wanted";
+    public static final String PICTURE = "picture";
+    public static final String DEF_VALUE = "5";
     private FlickrService flickrService;
     boolean bound = false;
     private AdapterList adapterList;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
-    private DrawerLayout DrawerLayout;
-    private ActionBarDrawerToggle DrawerToggle;
-    private String mTitle;
-    private String mDrawerTitle;
+    private SharedPreferences settings;
 
 
     @Override
@@ -54,43 +57,25 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        DrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        DrawerToggle = new ActionBarDrawerToggle(this, DrawerLayout, R.string.drawer_open, R.string.drawer_close);
+        // Restore preferences
+        settings = getPreferences(MODE_PRIVATE);
 
-        DrawerLayout.addDrawerListener(DrawerToggle);
+        initDrawer();
+        initSpinner();
+        initListView();
+        initSearch();
+    }
+
+    private void initDrawer() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+
+        drawerLayout.addDrawerListener(drawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
 
-        //--------------3rd part integrated the spinner button------------------------
-
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-            // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.number_array, android.R.layout.simple_spinner_item);
-            // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-        //--------------first part of flickr with the list and picasso---------------
-        ListView listView = (ListView) findViewById(R.id.list);
-        adapterList = new
-
-                AdapterList(this);
-
-        listView.setAdapter(adapterList);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView,
-                                    View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, ShowBigCellActivity.class);
-                intent.putExtra("picture", adapterList.getItem(position));
-                startActivity(intent);
-            }
-
-        });
-
+    private void initSearch() {
         FloatingActionButton searchButton = (FloatingActionButton) findViewById(R.id.fab2);
         final EditText textField = (EditText) findViewById(R.id.text_field);
 
@@ -99,30 +84,71 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
                  public void onClick(View v) {
                  //Toast.makeText(MainActivity.this,textField.getText().toString(),Toast.LENGTH_LONG).show();
                  String myQuery = textField.getText().toString();
-                 flickrService.getPhotos(myQuery);
+                 flickrService.getPhotos(myQuery,settings.getString(NUMBER_OF_PHOTOS_WANTED, DEF_VALUE));
                  }
               }
         );
+    }
+
+    private void initListView() {
+        ListView listView = (ListView) findViewById(R.id.list);
+        adapterList = new AdapterList(this);
+        listView.setAdapter(adapterList);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView,
+                                    View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, ShowBigCellActivity.class);
+                intent.putExtra(PICTURE, adapterList.getItem(position));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initSpinner() {
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.number_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(NUMBER_OF_PHOTOS_WANTED, adapter.getItem(position).toString());
+                editor.commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        String saved = settings.getString(NUMBER_OF_PHOTOS_WANTED, DEF_VALUE);
+        spinner.setSelection(adapter.getPosition(saved));
     }
 
     @Override
     protected void onPostCreate (Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        DrawerToggle.syncState();
+        drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged (Configuration newConfig){
         super.onConfigurationChanged(newConfig);
-        DrawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
-        if (DrawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         // Handle your other action bar items...

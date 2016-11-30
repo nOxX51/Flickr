@@ -50,9 +50,9 @@ public class FlickrService extends Service {
         }
     }
 
-    public void getPhotos(String query){
+    public void getPhotos(String query, String pages){
 
-        final Call<FlickrResponseDto> flickrPhotosResponseCall = service.getPhotos(query, getResources().getString(R.string.api_flicker_key));
+        final Call<FlickrResponseDto> flickrPhotosResponseCall = service.getPhotos(query, getResources().getString(R.string.api_flicker_key), pages);
         flickrPhotosResponseCall.enqueue(new Callback<FlickrResponseDto>(){
 
             @Override

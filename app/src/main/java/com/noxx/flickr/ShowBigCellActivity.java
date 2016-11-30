@@ -17,11 +17,11 @@ public class ShowBigCellActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_big_cell);
 
-        TextView title = (TextView) findViewById(R.id.title);
-        TextView url = (TextView) findViewById(R.id.url);
+        TextView title = (TextView) findViewById(R.id.big_title);
+        TextView url = (TextView) findViewById(R.id.big_url);
         ImageView image = (ImageView) findViewById(R.id.big_picture);
 
-        picture = (Picture) getIntent().getSerializableExtra("picture");
+        picture = (Picture) getIntent().getSerializableExtra(MainActivity.PICTURE);
         title.setText(picture.getTitle());
         url.setText(picture.getUrl());
 
