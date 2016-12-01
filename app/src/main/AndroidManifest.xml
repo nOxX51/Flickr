@@ -3,6 +3,7 @@
     package="com.noxx.flickr">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,9 @@
             android:name="com.noxx.flickr.FlickrService"
             android:enabled="true"
             android:exported="true"></service>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0ba74b46b5ce01951d77ee72dcdcef2186ac1701" />
     </application>
 
 </manifest>

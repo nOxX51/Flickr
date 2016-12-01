@@ -1,6 +1,7 @@
 package com.noxx.flickr;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import static com.noxx.flickr.R.id.picture;
 public class AdapterList extends BaseAdapter {
     private Context context;
     private List<Picture> myList = new ArrayList<>();
+    private SharedPreferences settings;
 
     public void setMyList(List<Picture> myList) {
         this.myList = myList;
@@ -74,8 +76,16 @@ public class AdapterList extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                settings = context.getSharedPreferences(MainActivity.FLICKR_SETTINGS,Context.MODE_PRIVATE);
+                String myActivity = settings.getString(MainActivity.ACTIVITY_VIEW_TYPE,"search");
+                if (myActivity.equals("historic")){
+                    PicturePersistenceManager picturePersistenceManager = new PicturePersistenceManager(context);
+
+                    picturePersistenceManager.delete(myList.get(position));
+                }
                 myList.remove(position);
                 notifyDataSetChanged();
+
             }
         });
 

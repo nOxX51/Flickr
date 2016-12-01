@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +22,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 import static com.noxx.flickr.R.id.b1;
@@ -40,7 +43,10 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
     private ActionBarDrawerToggle drawerToggle;
 
     private SharedPreferences settings;
-    PicturePersistenceManager savePicture = new PicturePersistenceManager(this);
+    PicturePersistenceManager savePicture;
+
+    public static final String ACTIVITY_VIEW_TYPE = "activityViewType";
+    public static final String FLICKR_SETTINGS = "FLICKR_SETTINGS";
 
     @Override
     protected void onStart() {
@@ -61,8 +67,10 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_list);
 
+        savePicture = new PicturePersistenceManager(this);
         // Restore preferences
         settings = getPreferences(MODE_PRIVATE);
 
@@ -83,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
             @Override
             public void onClick(View v) {
                 linearLayout.setVisibility(View.VISIBLE);
+                SharedPreferences settings = getSharedPreferences(FLICKR_SETTINGS,MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString(ACTIVITY_VIEW_TYPE, "search");
+                editor.commit();
             }
         });
         Button historicButton = (Button) findViewById(R.id.b2);
@@ -91,6 +103,15 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
             public void onClick(View v) {
                 linearLayout.setVisibility(View.GONE);
                 adapterList.setMyList(picturePersistenceManager.getAll());
+                SharedPreferences settings = getSharedPreferences(FLICKR_SETTINGS,MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+
+                editor.putString(ACTIVITY_VIEW_TYPE, "historic");
+                editor.commit();
+                if (adapterList!=null){
+                    adapterList.setMyList(picturePersistenceManager.getAll());
+                    adapterList.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -130,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
                 Intent intent = new Intent(MainActivity.this, ShowBigCellActivity.class);
                 intent.putExtra(PICTURE, adapterList.getItem(position));
                 startActivity(intent);
-                if(savePicture.getPictureByUrl(adapterList.getItem(position).getUrl()) != null) {
+                if(savePicture.getPictureByUrl(adapterList.getItem(position).getUrl()) == null) {
                     savePicture.save(adapterList.getItem(position));
                 }
 
