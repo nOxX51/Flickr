@@ -22,6 +22,11 @@ public class AdapterList extends BaseAdapter {
     private Context context;
     private List<Picture> myList = new ArrayList<>();
     private SharedPreferences settings;
+    private OnRowDeletedListner onRowDeletedListner;
+
+    public void setOnRowDeletedListner(OnRowDeletedListner onRowDeletedListner) {
+        this.onRowDeletedListner = onRowDeletedListner;
+    }
 
     public void setMyList(List<Picture> myList) {
         this.myList = myList;
@@ -81,7 +86,10 @@ public class AdapterList extends BaseAdapter {
                 if (myActivity.equals("historic")){
                     PicturePersistenceManager picturePersistenceManager = new PicturePersistenceManager(context);
 
-                    picturePersistenceManager.delete(myList.get(position));
+                    //picturePersistenceManager.delete(myList.get(position));
+                }
+                if (onRowDeletedListner != null) {
+                    onRowDeletedListner.onRowDeleted(myList.get(position));
                 }
                 myList.remove(position);
                 notifyDataSetChanged();

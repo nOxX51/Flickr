@@ -23,6 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.crashlytics.android.Crashlytics;
+import com.mattprecious.telescope.EmailLens;
+import com.mattprecious.telescope.TelescopeLayout;
+
 import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
@@ -31,7 +34,7 @@ import static com.noxx.flickr.R.id.search_layout;
 import static com.noxx.flickr.R.id.url_list;
 
 
-public class MainActivity extends AppCompatActivity implements FlickrResponseListner {
+public class MainActivity extends AppCompatActivity implements FlickrResponseListner, OnRowDeletedListner {
 
     public static final String NUMBER_OF_PHOTOS_WANTED = "number of photos wanted";
     public static final String PICTURE = "picture";
@@ -80,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
         initListView();
         initSearch();
         searchLayoutVisibility();
+
+        TelescopeLayout telescopeLayout = (TelescopeLayout) findViewById(R.id.telescope);
+        telescopeLayout.setLens(new EmailLens(this, "Bug", "noxx_51@hotmail.com"));
     }
 
     private void searchLayoutVisibility() {
@@ -91,10 +97,14 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
             @Override
             public void onClick(View v) {
                 linearLayout.setVisibility(View.VISIBLE);
-                SharedPreferences settings = getSharedPreferences(FLICKR_SETTINGS,MODE_PRIVATE);
+                /*SharedPreferences settings = getSharedPreferences(FLICKR_SETTINGS,MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString(ACTIVITY_VIEW_TYPE, "search");
-                editor.commit();
+                editor.commit();*/
+
+                adapterList.setOnRowDeletedListner(null);
+
+
             }
         });
         Button historicButton = (Button) findViewById(R.id.b2);
@@ -103,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
             public void onClick(View v) {
                 linearLayout.setVisibility(View.GONE);
                 adapterList.setMyList(picturePersistenceManager.getAll());
-                SharedPreferences settings = getSharedPreferences(FLICKR_SETTINGS,MODE_PRIVATE);
+                /*SharedPreferences settings = getSharedPreferences(FLICKR_SETTINGS,MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
 
                 editor.putString(ACTIVITY_VIEW_TYPE, "historic");
@@ -111,7 +121,11 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
                 if (adapterList!=null){
                     adapterList.setMyList(picturePersistenceManager.getAll());
                     adapterList.notifyDataSetChanged();
-                }
+                }*/
+
+                adapterList.setOnRowDeletedListner(MainActivity.this);
+
+
             }
         });
     }
@@ -228,6 +242,18 @@ public class MainActivity extends AppCompatActivity implements FlickrResponseLis
     @Override
     public void onPhotosReceived (List < Picture > pictureList) {
         adapterList.setMyList(pictureList);
+    }
+
+    @Override
+    protected void onDestroy() {
+        TelescopeLayout.cleanUp(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onRowDeleted(Picture picture) {
+        PicturePersistenceManager picturePersistenceManager = new PicturePersistenceManager(this);
+        picturePersistenceManager.delete(picture);
     }
 }
 

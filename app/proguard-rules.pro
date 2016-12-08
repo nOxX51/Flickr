@@ -15,3 +15,22 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Picasso
+-dontwarn com.squareup.okhttp.**
+
+# Retrofit
+-dontwarn retrofit2.**
+-dontwarn org.codehaus.mojo.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes *Annotation*
+-keepclasseswithmembers class * {
+    @retrofit.* <methods>;
+}
+
+-keepclasseswithmembers interface * {
+    @retrofit.* <methods>;
+}
+

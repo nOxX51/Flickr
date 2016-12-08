@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.mattprecious.telescope.TelescopeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/telescope"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -33,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_horizontal"
-                android:backgroundTint="@android:color/background_light"
+                app:backgroundTint="@android:color/background_light"
                 android:src="@android:drawable/ic_search_category_default"
                 app:fabSize="mini" />
 
@@ -103,3 +109,5 @@
             </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
+
+</com.mattprecious.telescope.TelescopeLayout>
